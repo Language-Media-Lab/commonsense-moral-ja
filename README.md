@@ -1,2 +1,2 @@
-# commonsense-ethics-ja
+# commonsense-moral-ja
 to be announced
