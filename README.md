@@ -1,2 +1,2 @@
-# commonsense-moral-ja
+# JCommonsenseMorality
 to be announced
