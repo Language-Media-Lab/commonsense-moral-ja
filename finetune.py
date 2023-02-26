@@ -3,8 +3,7 @@ import argparse
 import pickle
 import json
 import pyknp
-from tqdm.auto import tqdm, trange
-from fastprogress.fastprogress import master_bar, progress_bar
+from tqdm.auto import tqdm
 import numpy as np
 import pandas as pd
 import torch
@@ -130,88 +129,69 @@ class EarlyStopping:
         self.val_loss_min = val_loss
         
         
-def plot_loss_update(epoch, epochs, mb, train_loss, valid_loss):
-    # Copyright (c) 2017 fast.ai
-    # Released under the Apache License, Version 2.0
-    # https://github.com/fastai/fastprogress/blob/master/LICENSE
-    """ dynamically print the loss plot during the training/validation loop.
-        expects epoch to start from 1.
-    """
-    x = range(1, epoch+1)
-    y = np.concatenate((train_loss, valid_loss))
-    graphs = [[x,train_loss], [x,valid_loss]]
-    x_margin = 0.2
-    y_margin = 0.05
-    x_bounds = [1-x_margin, epochs+x_margin]
-    y_bounds = [np.min(y)-y_margin, np.max(y)+y_margin]
 
-    mb.update_graph(graphs, x_bounds, y_bounds)
     
     
     
-def run_finetuning(MODEL_NAME,dataset_train,dataloader_val,dataloader_test,epochs=4,rs_num=5,batch_size_train=16,lr=2e-5,patience=10,save=False):
+def run_finetuning(MODEL_NAME,dataset_train,dataloader_val,dataloader_test,epochs=4,batch_size_train=16,lr=2e-5,patience=10,save=False):
     all_test_results={}
     all_val_results={}
-    mb = master_bar(range(rs_num))
     batch_size_eval=256
     
-    for n in mb:
-        # print('===== '+str(n)+" =====")
-        # ランダムシードを固定
-        fix_seed(n)
+    seed = 0
+    fix_seed(n)
 
-        train_losses = []
-        val_losses = []
-        
+    train_losses = []
+    val_losses = []
+
+    if patience is not None:
+        earlystopping = EarlyStopping(patience=patience, verbose=True)
+
+    # DataLoaderに渡す
+    dataloader_train = DataLoader(
+      dataset_train, batch_size=batch_size_train, shuffle=True
+    ) 
+    dataloader_val = DataLoader(dataset_val, batch_size=batch_size_eval)
+    dataloader_test = DataLoader(dataset_test, batch_size=batch_size_eval)
+
+    # モデルの読み込み
+    model = AutoModelForSequenceClassification.from_pretrained(
+            MODEL_NAME,
+            num_labels=2,
+            output_attentions = False,
+            output_hidden_states = False,
+        )
+    model.cuda()
+
+    optimizer = AdamW(model.parameters(), lr=lr)
+
+    #学習
+    for epoch in tqdm(range(epochs)):
+        # print("epoch: "+str(epoch+1))
+        train_loss = train(model,dataloader_train,optimizer)/(len(dataset_train)//batch_size_train)
+        train_losses.append(train_loss.to('cpu').detach().numpy().copy())
+        val_loss = validation(model,dataloader_val)/(len(dataset_val)//batch_size_eval)
+        val_losses.append(val_loss.to('cpu').detach().numpy().copy())
+        # print("train loss: "+str(train_loss))
+        # print("val loss: "+str(val_loss))
+
         if patience is not None:
-            earlystopping = EarlyStopping(patience=patience, verbose=True)
+            earlystopping(val_loss, model)
 
-        # DataLoaderに渡す
-        dataloader_train = DataLoader(
-          dataset_train, batch_size=batch_size_train, shuffle=True
-        ) 
-        dataloader_val = DataLoader(dataset_val, batch_size=batch_size_eval)
-        dataloader_test = DataLoader(dataset_test, batch_size=batch_size_eval)
+            if earlystopping.early_stop:
+                print("Early Stopping!")
+                break
+            if epoch==0:
+                continue
 
-        # モデルの読み込み
-        bert_sc = AutoModelForSequenceClassification.from_pretrained(
-                MODEL_NAME,
-                num_labels=2,
-                output_attentions = False,
-                output_hidden_states = False,
-            )
-        bert_sc.cuda()
+    # earlystoppingを使って保存した、検証セットでベストだったモデルを読み込み
+    model.load_state_dict(torch.load('checkpoint.pt'))
+    print("loaded best model")
 
-        optimizer = AdamW(bert_sc.parameters(), lr=lr)
-        
-        #学習
-        for epoch in progress_bar(range(epochs),parent=mb):
-            # print("epoch: "+str(epoch+1))
-            train_loss = train(bert_sc,dataloader_train,optimizer)/(len(dataset_train)//batch_size_train)
-            train_losses.append(train_loss.to('cpu').detach().numpy().copy())
-            val_loss = validation(bert_sc,dataloader_val)/(len(dataset_val)//batch_size_eval)
-            val_losses.append(val_loss.to('cpu').detach().numpy().copy())
-            # print("train loss: "+str(train_loss))
-            # print("val loss: "+str(val_loss))
-            # plot_loss_update(epoch+1, epochs, mb, np.array(train_losses), np.array(val_losses))
-            
-            if patience is not None:
-                earlystopping(val_loss, bert_sc)
-
-                if earlystopping.early_stop:
-                    print("Early Stopping!")
-                    break
-                if epoch==0:
-                    continue
-
-        # earlystoppingを使って保存した、検証セットでベストだったモデルを読み込み
-        bert_sc.load_state_dict(torch.load('checkpoint.pt'))
-        print("loaded best model")
-        
-        # 検証セットとテストセットでの精度を保存
-        all_test_results[n]=test_report(bert_sc,dataloader_test)
-        all_val_results[n]=test_report(bert_sc,dataloader_val)
-        # print(all_results[n]['accuracy'])
+    # 検証セットとテストセットでの精度を保存
+    all_test_results[n]=test_report(model,dataloader_test)
+    all_val_results[n]=test_report(model,dataloader_val)
+    # print(all_results[n]['accuracy'])
     
     # 結果の保存
     if save:
@@ -222,13 +202,13 @@ def run_finetuning(MODEL_NAME,dataset_train,dataloader_val,dataloader_test,epoch
             json.dump(all_val_results,f,indent=4)
             print("saved valid_list")
     return all_test_results,all_val_results
-            
-            
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='')
-    parser.add_argument('-m','--model',required=True)
-    parser.add_argument('-l','--lr',required=True)
-    parser.add_argument('-b','--batch',required=True)
+    parser.add_argument('-m','--model',type=str, default="cl-tohoku/bert-base-japanese-whole-word-masking")
+    parser.add_argument('-l','--lr',type=float, default=2e-5)
+    parser.add_argument('-b','--batch',type=int, default=16)
     parser.add_argument('-f','--filepath',required=True)
     
     MODEL_NAME = parser.parse_args().model
