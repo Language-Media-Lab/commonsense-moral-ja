@@ -189,8 +189,8 @@ def run_finetuning(MODEL_NAME,dataset_train,dataloader_val,dataloader_test,epoch
     print("loaded best model")
 
     # 検証セットとテストセットでの精度を保存
-    all_test_results[0]=test_report(model,dataloader_test)
-    all_val_results[0]=test_report(model,dataloader_val)
+    all_test_results[seed]=test_report(model,dataloader_test)
+    all_val_results[seed]=test_report(model,dataloader_val)
     # print(all_results[n]['accuracy'])
     
     # 結果の保存
