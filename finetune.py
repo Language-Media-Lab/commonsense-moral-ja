@@ -1,8 +1,6 @@
 import random
 import argparse
-import pickle
 import json
-import pyknp
 from tqdm.auto import tqdm
 import numpy as np
 import pandas as pd
@@ -18,9 +16,6 @@ def fix_seed(seed):
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
     torch.backends.cudnn.deterministic = True
-seed = 0
-fix_seed(seed)
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 
 def train(model,loader,optimizer):
@@ -138,8 +133,7 @@ def run_finetuning(MODEL_NAME,dataset_train,dataloader_val,dataloader_test,epoch
     all_val_results={}
     batch_size_eval=256
     
-    seed = 0
-    fix_seed(n)
+    fix_seed(seed)
 
     train_losses = []
     val_losses = []
@@ -210,6 +204,11 @@ if __name__ == '__main__':
     parser.add_argument('-l','--lr',type=float, default=2e-5)
     parser.add_argument('-b','--batch',type=int, default=16)
     parser.add_argument('-f','--filepath',required=True)
+    
+    
+    seed = 0
+    fix_seed(seed)
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     
     MODEL_NAME = parser.parse_args().model
     lr = float(parser.parse_args().lr)
