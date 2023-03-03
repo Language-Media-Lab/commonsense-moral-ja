@@ -1,4 +1,4 @@
-# JCommonsenseMorality (japan)
+# JCommonsenseMorality
 JCommonsenseMoralityはクラウドソーシングによって作成された、日本の常識道徳を反映したデータセットです。
 
 データセットは[data](https://github.com/Language-Media-Lab/commonsense-moral-ja/tree/main/data)から取得できます。
