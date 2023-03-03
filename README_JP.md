@@ -14,6 +14,7 @@ fine-tuning用のコードは[finetune.py](https://github.com/Language-Media-Lab
 
 ## タスクとデータ構成
 すべての文は「1」「0」でラベル付けされており、「1」は道徳的に明らかに間違っており、「0」は許容できることを示しています。
+
 データ構成
 |Train|Dev|Test|Total|
 |-----|---|----|-----|
@@ -22,6 +23,7 @@ fine-tuning用のコードは[finetune.py](https://github.com/Language-Media-Lab
 
 ## ベースライン
 以下の結果はすべて、5つのランダムシードを用いて学習した各モデルのスコアの平均です。
+
 |Model|acc|pre|rec|f1|
 |-----|---|---|---|--|
 |[Tohoku BERT base](https://huggingface.co/cl-tohoku/bert-base-japanese-whole-word-masking)|0.7836|0.7740|0.7601|0.7664|
