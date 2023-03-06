@@ -4,6 +4,8 @@ JCommonsenseMoralityはクラウドソーシングによって作成された、
 データセットは[data](https://github.com/Language-Media-Lab/commonsense-moral-ja/tree/main/data)から取得できます。
 fine-tuning用のコードは[finetune.py](https://github.com/Language-Media-Lab/commonsense-moral-ja/tree/main/finetune.py)から取得できます。
 
+論文は[ここ](https://www.anlp.jp/proceedings/annual_meeting/2023/pdf_dir/D2-1.pdf)で読めます。
+
 例
 |文|ラベル|
 |-----|---|
@@ -34,6 +36,18 @@ fine-tuning用のコードは[finetune.py](https://github.com/Language-Media-Lab
 本データセットはMITライセンスのもとに置かれています。
 https://github.com/Language-Media-Lab/commonsense-moral-ja/blob/main/LICENSE
 
+
+## Citation
+```
+@InProceedings{Takeshita_nlp2023,
+  author = 	"竹下昌志 and ジェプカラファウ and 荒木健治",
+  title = 	"JCommonsenseMorality: 常識道徳の理解度評価用日本語データセット",
+  booktitle = 	"言語処理学会第29回年次大会(NLP2023)",
+  year =	"2023",
+  url = "https://www.anlp.jp/proceedings/annual_meeting/2023/pdf_dir/D2-1.pdf"
+  note= "in Japanese"
+}
+```
 
 ## 謝辞
 本研究はJSPS科研費JP22J21160の助成を受けたものです。
