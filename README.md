@@ -4,8 +4,10 @@
 JCommonsenseMorality is a dataset created through crowdsourcing that reflects the commonsense morality of Japanese annotators.
 
 Dataset is available at [data](https://github.com/Language-Media-Lab/commonsense-moral-ja/tree/main/data).
+
 Code for fine-tuning is available at [finetune.py](https://github.com/Language-Media-Lab/commonsense-moral-ja/tree/main/finetune.py).
 
+You can read our paper (japanese) at [here](https://www.anlp.jp/proceedings/annual_meeting/2023/pdf_dir/D2-1.pdf).
 
 Examples
 |sentence|label|
@@ -35,5 +37,31 @@ All results are average scores of the model trained on five random seeds.
 This work is licensed under a MIT License.
 https://github.com/Language-Media-Lab/commonsense-moral-ja/blob/main/LICENSE
 
+## Citation
+Japanese
+```
+@InProceedings{Takeshita_nlp2023,
+  author = 	"竹下昌志 and ジェプカラファウ and 荒木健治",
+  title = 	"JCommonsenseMorality: 常識道徳の理解度評価用日本語データセット",
+  booktitle = 	"言語処理学会第29回年次大会(NLP2023)",
+  year =	"2023",
+  url = "https://www.anlp.jp/proceedings/annual_meeting/2023/pdf_dir/D2-1.pdf"
+  note= "in Japanese"
+}
+```
+English (translated)
+```
+@InProceedings{Takeshita_nlp2023,
+  author = 	"Masashi, Takeshita and Rafal, Rzpeka and Kenji, Araki",
+  title = 	"JCommonsenseMorality: Japanese Dataset for evaluating commonsense morality understanding",
+  booktitle = "In Proceedings of The Twenty Nineth Annual Meeting of The Association for Natural Language Processing (NLP2023)",
+  year =	"2023",
+  url = "https://www.anlp.jp/proceedings/annual_meeting/2023/pdf_dir/D2-1.pdf"
+  note= "in Japanese"
+}
+```
+
+
 ## Acknowledgment
 This work was supported by JSPS KAKENHI Grant Number JP22J21160.
+
