@@ -43,9 +43,10 @@ Japanese
 @InProceedings{Takeshita_nlp2023,
   author = 	"竹下昌志 and ジェプカラファウ and 荒木健治",
   title = 	"JCommonsenseMorality: 常識道徳の理解度評価用日本語データセット",
-  booktitle = 	"言語処理学会第29回年次大会(NLP2023)",
+  booktitle = 	"言語処理学会第29回年次大会",
   year =	"2023",
-  url = "https://www.anlp.jp/proceedings/annual_meeting/2023/pdf_dir/D2-1.pdf"
+  pages = "357-362",
+  url = "https://www.anlp.jp/proceedings/annual_meeting/2023/pdf_dir/D2-1.pdf",
   note= "in Japanese"
 }
 ```
@@ -56,7 +57,8 @@ English (translated)
   title = 	"JCommonsenseMorality: Japanese Dataset for evaluating commonsense morality understanding",
   booktitle = "In Proceedings of The Twenty Nineth Annual Meeting of The Association for Natural Language Processing (NLP2023)",
   year =	"2023",
-  url = "https://www.anlp.jp/proceedings/annual_meeting/2023/pdf_dir/D2-1.pdf"
+  pages = "357-362",
+  url = "https://www.anlp.jp/proceedings/annual_meeting/2023/pdf_dir/D2-1.pdf",
   note= "in Japanese"
 }
 ```
