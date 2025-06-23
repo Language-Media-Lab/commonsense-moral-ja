@@ -1,5 +1,11 @@
-# JCommonsenseMorality
+This dataset has been integrated into [JETHICS](https://github.com/Language-Media-Lab/jethics/tree/main) and is now included as a subset. Please refer to the JETHICS repository for future reference.
+
+このデータセットはサブセットとして[JETHICS](https://github.com/Language-Media-Lab/jethics/tree/main)に統合されました。今後はJETHICSのサイトを参照してください。
+
 [日本語 readme](https://github.com/Language-Media-Lab/commonsense-moral-ja/blob/main/README_JP.md)
+
+
+# JCommonsenseMorality
 
 JCommonsenseMorality is a dataset created through crowdsourcing that reflects the commonsense morality of Japanese annotators.
 
