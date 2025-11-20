@@ -59,7 +59,7 @@ Japanese
 English (translated)
 ```
 @InProceedings{Takeshita_nlp2023,
-  author = 	"Masashi Takeshita and Rafal Rzpeka and Kenji Araki",
+  author = 	"Masashi Takeshita and Rafal Rzepka and Kenji Araki",
   title = 	"JCommonsenseMorality: Japanese Dataset for evaluating commonsense morality understanding",
   booktitle = "In Proceedings of The Twenty Nineth Annual Meeting of The Association for Natural Language Processing (NLP2023)",
   year =	"2023",
